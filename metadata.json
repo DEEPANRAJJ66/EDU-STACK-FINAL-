@@ -1,0 +1,6 @@
+{
+  "name": "EduStack Test Series",
+  "description": "NTA JEE Main-style CBT mock test platform with Live Todo & Time Planner, post-task reflection analytics, and interactive STEM teaching whiteboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

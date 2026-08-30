@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function myProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (request.auth.token.role == 'admin' || myProfile().role == 'ADMIN');
+    }
+
+    // Approved teacher OR Admin. Pending/rejected/suspended teachers are NOT teachers
+    // for authorization purposes - status is enforced here, not just role.
+    function isApprovedTeacherOrAdmin() {
+      return isAuthenticated() &&
+        (isAdmin() || (myProfile().role == 'TEACHER' && myProfile().status == 'APPROVED'));
+    }
+
+    // Users Collection - profiles are primarily managed by the backend (Admin SDK, which
+    // bypasses these rules). Client writes to role/status are never allowed here; a user
+    // may only ever read profiles, and may only touch their own non-authorization fields.
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) &&
+        request.resource.data.role == resource.data.role &&
+        request.resource.data.status == resource.data.status;
+      allow delete: if isAdmin();
+    }
+
+    // Tests Collection
+    match /tests/{testId} {
+      allow read: if true;
+      allow create, update, delete: if isApprovedTeacherOrAdmin();
+    }
+
+    // Questions Collection
+    match /questions/{questionId} {
+      allow read: if true;
+      allow create, update, delete: if isApprovedTeacherOrAdmin();
+    }
+
+    // Test Attempts Collection
+    match /attempts/{attemptId} {
+      allow read: if isAuthenticated() && (resource.data.studentId == request.auth.uid || isApprovedTeacherOrAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (resource.data.studentId == request.auth.uid || isApprovedTeacherOrAdmin());
+      allow delete: if isApprovedTeacherOrAdmin();
+    }
+
+    // Error Notes Collection
+    match /errorNotes/{noteId} {
+      allow read: if isAuthenticated() && (resource.data.studentId == request.auth.uid || isApprovedTeacherOrAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (resource.data.studentId == request.auth.uid || isApprovedTeacherOrAdmin());
+      allow delete: if isApprovedTeacherOrAdmin();
+    }
+  }
+}

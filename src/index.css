@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* 
+ * GLOBAL FIX FOR KATEX MATHEMATICAL RENDERING IN TAILWIND 
+ * 
+ * 1. Tailwind resets `line-height` to 1.5 globally. KaTeX precisely calculates vertical stacking 
+ *    (like fractions) assuming `line-height: normal`. The 1.5 multiplier causes numerators 
+ *    and denominators to overlap with the fraction bar.
+ * 2. Tailwind resets `border-color` to a faint gray globally. KaTeX relies on borders for fraction bars,
+ *    so we must force them to inherit the text color (`currentColor`).
+ */
+.katex, .katex * {
+    line-height: 1.2 !important;
+    border-color: currentColor !important;
+}
+
+/* 
+ * PRINT & PDF GENERATION STYLING
+ */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide print-hidden controls */
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Page break rules for questions and cards */
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
+

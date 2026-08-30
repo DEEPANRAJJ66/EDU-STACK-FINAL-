@@ -1,0 +1,118 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account and profile information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique user ID" },
+        "email": { "type": "string", "description": "User email address" },
+        "name": { "type": "string", "description": "User display name" },
+        "role": { "type": "string", "enum": ["STUDENT", "TEACHER", "ADMIN"], "description": "User role" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "email", "name", "role", "createdAt"]
+    },
+    "Test": {
+      "title": "Test",
+      "description": "Mock tests and exams created by teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "testType": { "type": "string" },
+        "durationMinutes": { "type": "number" },
+        "totalQuestions": { "type": "number" },
+        "marksPerQuestion": { "type": "number" },
+        "negativeMarks": { "type": "number" },
+        "instructions": { "type": "string" },
+        "status": { "type": "string", "enum": ["DRAFT", "PUBLISHED"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "teacherId", "title", "testType", "durationMinutes", "status", "createdAt"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "Question details with LaTeX math, figures, and options",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "testId": { "type": "string" },
+        "subject": { "type": "string", "enum": ["PHYSICS", "CHEMISTRY", "MATHEMATICS", "BIOLOGY", "GENERAL"] },
+        "type": { "type": "string", "enum": ["SINGLE_CHOICE", "NUMERICAL"] },
+        "questionText": { "type": "string" },
+        "orderIndex": { "type": "number" },
+        "marks": { "type": "number" },
+        "negativeMarks": { "type": "number" },
+        "correctOptionId": { "type": "string" },
+        "numericalAnswer": { "type": "number" },
+        "solutionText": { "type": "string" }
+      },
+      "required": ["id", "testId", "subject", "questionText", "orderIndex"]
+    },
+    "TestAttempt": {
+      "title": "TestAttempt",
+      "description": "Student test submission, answers, time spent and score",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "testId": { "type": "string" },
+        "testTitle": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "status": { "type": "string", "enum": ["IN_PROGRESS", "SUBMITTED"] },
+        "score": { "type": "number" },
+        "maxScore": { "type": "number" },
+        "totalCorrect": { "type": "number" },
+        "totalIncorrect": { "type": "number" },
+        "totalUnattempted": { "type": "number" },
+        "timeSpentSeconds": { "type": "number" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "submittedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "testId", "studentId", "status", "startedAt"]
+    },
+    "AttemptErrorNotes": {
+      "title": "AttemptErrorNotes",
+      "description": "Student mistake classification and revision notes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "attemptId": { "type": "string" },
+        "testId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "notes": { "type": "object" },
+        "isFullyCompleted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "attemptId", "testId", "studentId", "notes", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Registered user accounts"
+    },
+    "/tests/{testId}": {
+      "schema": "Test",
+      "description": "Published and draft tests"
+    },
+    "/questions/{questionId}": {
+      "schema": "Question",
+      "description": "Exam questions belonging to tests"
+    },
+    "/attempts/{attemptId}": {
+      "schema": "TestAttempt",
+      "description": "Student attempt records"
+    },
+    "/errorNotes/{noteId}": {
+      "schema": "AttemptErrorNotes",
+      "description": "Error notes and revision journals"
+    }
+  }
+}
