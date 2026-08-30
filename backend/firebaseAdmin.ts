@@ -1,12 +1,8 @@
 import { initializeApp, cert, getApps, App } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
 import { getAuth, Auth } from 'firebase-admin/auth';
-import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Look for service-account.json in backend/ or root
 const serviceAccountPath = path.resolve(__dirname, 'service-account.json');
