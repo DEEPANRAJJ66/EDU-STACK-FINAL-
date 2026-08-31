@@ -5,6 +5,7 @@ import { authService } from './services/authService';
 import { Navbar } from './components/Navbar';
 import { LoginPage } from './components/LoginPage';
 import { AdminLoginPage } from './components/AdminLoginPage';
+import { CompleteProfilePage } from './components/CompleteProfilePage';
 import { AccessStatusScreen } from './components/AccessStatusScreen';
 import { AdminDashboard } from './components/AdminDashboard';
 import { TeacherDashboard } from './components/TeacherDashboard';
@@ -37,6 +38,10 @@ type ViewMode =
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // Set when Firebase confirms someone is signed in, but the backend has no EduStack
+  // profile for them (e.g. an older account that predates a database change). Holds their
+  // email just so CompleteProfilePage can show it - not used for anything else.
+  const [needsRegistrationEmail, setNeedsRegistrationEmail] = useState<string | null>(null);
   // True while we're checking Firebase's auth state / fetching the EduStack profile on
   // load. Distinct from `loading`, which is used for in-app data fetches further down.
   const [authChecking, setAuthChecking] = useState<boolean>(true);
@@ -97,14 +102,23 @@ export default function App() {
     try {
       const res = await api.auth.me();
       setCurrentUser(res.user);
+      setNeedsRegistrationEmail(null);
       if (res.user.role === 'TEACHER') {
         setViewMode('TEACHER_DASHBOARD');
       } else if (res.user.role === 'STUDENT') {
         setViewMode('STUDENT_DASHBOARD');
       }
-    } catch (e) {
+    } catch (e: any) {
+      if (e?.status === 404 && e?.data?.code === 'NO_PROFILE') {
+        // Valid Firebase session, no EduStack profile - let them finish registering
+        // instead of just bouncing back to a login screen that looks broken.
+        setCurrentUser(null);
+        setNeedsRegistrationEmail(authService.getCurrentUser()?.email || '');
+        return;
+      }
       console.error('Failed to load user profile', e);
       setCurrentUser(null);
+      setNeedsRegistrationEmail(null);
     }
   };
 
@@ -155,6 +169,7 @@ export default function App() {
         await refreshProfile();
       } else {
         setCurrentUser(null);
+        setNeedsRegistrationEmail(null);
       }
       hasCheckedOnce.current = true;
       setAuthChecking(false);
@@ -515,6 +530,18 @@ export default function App() {
       <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400 text-sm">
         Loading EduStack...
       </div>
+    );
+  }
+
+  if (needsRegistrationEmail) {
+    return (
+      <CompleteProfilePage
+        email={needsRegistrationEmail}
+        onDone={() => {
+          setNeedsRegistrationEmail(null);
+          refreshProfile();
+        }}
+      />
     );
   }
 
