@@ -47,12 +47,13 @@ class Database {
     plannerTasks: [],
   };
   private isLoaded = false;
+  public ready: Promise<void>;
 
   constructor() {
-    this.init();
+    this.ready = this.init();
   }
 
-  private init() {
+  private async init() {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
@@ -83,6 +84,7 @@ class Database {
         }
         this.isLoaded = true;
         this.syncWithFirestore();
+        await this.loadLiveDataFromFirestore();
         return;
       } catch (err) {
         console.error('Failed to read db file, initializing with seeds', err);
@@ -94,6 +96,62 @@ class Database {
     this.save();
     this.isLoaded = true;
     this.syncWithFirestore();
+    await this.loadLiveDataFromFirestore();
+  }
+
+  // Loads users/attempts/errorNotes that were created live (by real people using the
+  // deployed site) from Firestore, since those are the things that must survive a Render
+  // restart — tests/questions still come from the committed seed file, since you manage
+  // those yourself via code.
+  private async loadLiveDataFromFirestore() {
+    try {
+      const firestore = getFirebaseFirestore();
+      if (!firestore) return;
+
+      const [usersSnap, attemptsSnap, errorNotesSnap] = await Promise.all([
+        firestore.collection('live_users').get(),
+        firestore.collection('live_attempts').get(),
+        firestore.collection('live_errorNotes').get(),
+      ]);
+
+      if (!usersSnap.empty) {
+        const byId = new Map(this.data.users.map(u => [u.id, u]));
+        usersSnap.forEach(doc => byId.set(doc.id, doc.data() as User));
+        this.data.users = Array.from(byId.values());
+      }
+
+      if (!attemptsSnap.empty) {
+        const byId = new Map(this.data.attempts.map(a => [a.id, a]));
+        attemptsSnap.forEach(doc => byId.set(doc.id, doc.data() as TestAttempt));
+        this.data.attempts = Array.from(byId.values());
+      }
+
+      if (!errorNotesSnap.empty) {
+        const byId = new Map(this.data.errorNotes.map(e => [e.id, e]));
+        errorNotesSnap.forEach(doc => byId.set(doc.id, doc.data() as AttemptErrorNotes));
+        this.data.errorNotes = Array.from(byId.values());
+      }
+
+      console.log('[Firebase] Loaded live users/attempts/errorNotes from Firestore');
+    } catch (err) {
+      console.warn('[Firebase] Could not load live data from Firestore, continuing with local snapshot:', err);
+    }
+  }
+
+  // Fire-and-forget write of one live record to Firestore, so it survives a restart. Errors
+  // are only logged (never thrown) so a slow/unavailable Firestore never breaks the actual
+  // request the user is waiting on — the local JSON copy (via save()) is still the
+  // instant/authoritative source for the current server process.
+  private persistLive(collectionName: string, id: string, data: any) {
+    try {
+      const firestore = getFirebaseFirestore();
+      if (!firestore) return;
+      firestore.collection(collectionName).doc(id).set(data, { merge: true }).catch((err: any) => {
+        console.warn(`[Firebase] Failed to persist ${collectionName}/${id}:`, err);
+      });
+    } catch (err) {
+      console.warn(`[Firebase] Failed to persist ${collectionName}/${id}:`, err);
+    }
   }
 
   private async syncWithFirestore() {
@@ -754,6 +812,7 @@ class Database {
     };
     this.data.users.push(newUser);
     this.save();
+    this.persistLive('live_users', newUser.id, newUser);
     return newUser;
   }
 
@@ -766,6 +825,7 @@ class Database {
       updatedAt: new Date().toISOString(),
     };
     this.save();
+    this.persistLive('live_users', id, this.data.users[idx]);
     return this.data.users[idx];
   }
 
@@ -787,6 +847,7 @@ class Database {
         updatedAt: now,
       };
       this.save();
+      this.persistLive('live_users', this.data.users[existingIdx].id, this.data.users[existingIdx]);
       return this.data.users[existingIdx];
     }
 
@@ -801,6 +862,7 @@ class Database {
     };
     this.data.users.push(newUser);
     this.save();
+    this.persistLive('live_users', newUser.id, newUser);
     return newUser;
   }
 
@@ -1110,6 +1172,7 @@ class Database {
   public createAttempt(attempt: TestAttempt): TestAttempt {
     this.data.attempts.push(attempt);
     this.save();
+    this.persistLive('live_attempts', attempt.id, attempt);
     return attempt;
   }
 
@@ -1143,6 +1206,7 @@ class Database {
       ...updates,
     };
     this.save();
+    this.persistLive('live_attempts', id, this.data.attempts[idx]);
     return this.data.attempts[idx];
   }
 
@@ -1216,6 +1280,7 @@ class Database {
 
       this.data.errorNotes[existingIdx] = updated;
       this.save();
+      this.persistLive('live_errorNotes', updated.id, updated);
       return updated;
     }
 
@@ -1234,6 +1299,7 @@ class Database {
 
     this.data.errorNotes.push(newRecord);
     this.save();
+    this.persistLive('live_errorNotes', newRecord.id, newRecord);
     return newRecord;
   }
 

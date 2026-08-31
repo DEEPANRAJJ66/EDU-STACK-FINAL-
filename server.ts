@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 import { authenticate } from './backend/auth';
+import { db } from './backend/db';
 import { authRouter } from './backend/routes/authRoutes';
 import { adminRouter } from './backend/routes/adminRoutes';
 import { testRouter } from './backend/routes/testRoutes';
@@ -12,6 +13,10 @@ import { attemptRouter } from './backend/routes/attemptRoutes';
 import { plannerRouter } from './backend/routes/plannerRoutes';
 
 async function startServer() {
+  // Wait for the database to finish loading (local seed file + any live user/attempt data
+  // saved to Firestore from a previous run) before accepting any requests.
+  await db.ready;
+
   const app = express();
   const PORT = 3000;
 
@@ -62,4 +67,3 @@ async function startServer() {
 startServer().catch(err => {
   console.error('Failed to start server:', err);
 });
-
