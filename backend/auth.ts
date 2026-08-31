@@ -78,6 +78,7 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
   } catch (err) {
     // Invalid/expired token: treat as unauthenticated rather than erroring the request,
     // so public routes still work. Protected routes below will reject via requireAuth.
+    console.error('TOKEN VERIFICATION FAILED:', err);
     req.user = undefined;
   }
 

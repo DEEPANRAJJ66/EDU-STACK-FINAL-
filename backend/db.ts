@@ -30,6 +30,10 @@ export interface DatabaseSchema {
 
 const DATA_DIR = process.env.NODE_ENV === 'production' ? path.join('/tmp', 'data') : path.join(process.cwd(), 'data');
 const DB_FILE = path.join(DATA_DIR, 'edustack_db.json');
+// This is the copy of your data committed to your GitHub repo — used to "seed" a fresh
+// production database whenever Render restarts and wipes /tmp (which has no memory of
+// anything created after this file was last committed).
+const SEED_FILE = path.join(process.cwd(), 'data', 'edustack_db.json');
 
 class Database {
   private data: DatabaseSchema = {
@@ -51,6 +55,12 @@ class Database {
   private init() {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+
+    // On a fresh production boot, /tmp is empty — copy in the committed snapshot so your
+    // existing tests/questions show up, instead of starting completely blank.
+    if (process.env.NODE_ENV === 'production' && !fs.existsSync(DB_FILE) && fs.existsSync(SEED_FILE)) {
+      fs.copyFileSync(SEED_FILE, DB_FILE);
     }
 
     if (fs.existsSync(DB_FILE)) {
