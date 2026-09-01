@@ -424,6 +424,22 @@
     "createdAt": "2026-08-28T00:00:00.000Z",
     "updatedAt": "2026-08-28T00:00:00.000Z",
     "questionCount": 25
+  },{
+    "id": "test_kinematics_jee_2020",
+    "teacherId": "user_teacher_1",
+    "teacherName": "Teacher",
+    "title": "Kinematics - JEE Main 2020",
+    "description": "Previous year questions practice test covering 1D kinematics, projectile motion, relative motion, and graphical analysis from JEE Main 2020.",
+    "testType": "PHYSICS",
+    "durationMinutes": 45,
+    "totalQuestions": 13,
+    "marksPerQuestion": 4,
+    "negativeMarks": 1,
+    "instructions": "Attempt all questions. Clock starts as soon as you proceed.",
+    "status": "PUBLISHED",
+    "createdAt": "2026-08-28T00:00:00.000Z",
+    "updatedAt": "2026-08-28T00:00:00.000Z",
+    "questionCount": 13
   }
   ],
   "testFolders": [
@@ -9648,6 +9664,245 @@
       "numericalAnswer": 4.00,
       "createdAt": "2026-08-28T09:00:16.384Z",
       "updatedAt": "2026-08-28T09:00:40.055Z"
+    },{
+      "id": "q_k20_01",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 1,
+      "questionText": "A balloon is moving up in air vertically above a point A on the ground. When it is at a height $h_{1},$ a girl standing at a distance d (point B) from A (see figure) sees it at an angle $45^{\\circ}$ with respect to the vertical. When the balloon climbs up a further height $h_{2}$ it is seen at an angle $60^{\\circ}$ with respect to the vertical if the girl moves further by a distance 2.464d (point C). Then the height $h_{2}$ is (given $\\tan 30^{\\circ}=0.5774$): <svg viewBox='0 0 320 180' width='300' height='170' xmlns='http://www.w3.org/2000/svg' style='display:block;margin:10px auto;background:#fff;'><line x1='50' y1='150' x2='290' y2='150' stroke='#000' stroke-width='2'/><line x1='60' y1='150' x2='60' y2='20' stroke='#000' stroke-width='2'/><line x1='60' y1='90' x2='140' y2='150' stroke='#000' stroke-width='2'/><line x1='60' y1='40' x2='260' y2='150' stroke='#000' stroke-width='2'/><line x1='140' y1='150' x2='140' y2='110' stroke='#555' stroke-dasharray='3,3'/><line x1='260' y1='150' x2='260' y2='110' stroke='#555' stroke-dasharray='3,3'/><text x='115' y='130' font-family='sans-serif' font-size='11'>45°</text><text x='235' y='130' font-family='sans-serif' font-size='11'>60°</text><text x='55' y='165' font-family='sans-serif' font-size='12' font-weight='bold'>A</text><text x='135' y='165' font-family='sans-serif' font-size='12' font-weight='bold'>B</text><text x='255' y='165' font-family='sans-serif' font-size='12' font-weight='bold'>C</text><text x='95' y='165' font-family='sans-serif' font-size='11'>d</text><text x='185' y='165' font-family='sans-serif' font-size='11'>2.464d</text><line x1='45' y1='150' x2='45' y2='90' stroke='#000' stroke-width='1'/><text x='25' y='125' font-family='sans-serif' font-size='11'>h₁</text><line x1='45' y1='90' x2='45' y2='40' stroke='#000' stroke-width='1'/><text x='25' y='70' font-family='sans-serif' font-size='11'>h₂</text></svg>",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "From point B, angle with vertical is 45 deg, so angle with horizontal is 45 deg: h1/d = tan(45 deg) = 1, giving h1 = d. From point C, total horizontal distance from A is d + 2.464d = 3.464d. Angle with vertical is 60 deg, so angle with horizontal is 30 deg: (h1 + h2) / (3.464d) = tan(30 deg) = 0.5774. Thus h1 + h2 = 3.464 * 0.5774 * d = 2.0d. Since h1 = d, h2 = 2.0d - d = d.",
+      "options": [
+        { "id": "opt_k20_01_1", "questionId": "q_k20_01", "optionLabel": "A", "optionText": "$d$", "orderIndex": 1 },
+        { "id": "opt_k20_01_2", "questionId": "q_k20_01", "optionLabel": "B", "optionText": "$0.732d$", "orderIndex": 2 },
+        { "id": "opt_k20_01_3", "questionId": "q_k20_01", "optionLabel": "C", "optionText": "$1.464d$", "orderIndex": 3 },
+        { "id": "opt_k20_01_4", "questionId": "q_k20_01", "optionLabel": "D", "optionText": "$0.464d$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_01_1"
+    },
+    {
+      "id": "q_k20_02",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 2,
+      "questionText": "A helicopter rises from rest on the ground vertically upwards with a constant acceleration $g$. A food packet is dropped from the helicopter when it is at a height $h$. The time taken by the packet to reach the ground is close to [$g$ is the acceleration due to gravity]:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "When the helicopter rises from rest with acceleration g to height h, its upward velocity is v = sqrt(2gh). For the dropped packet: -h = v*t - (1/2)*g*t^2 => (1/2)*g*t^2 - sqrt(2gh)*t - h = 0. Solving for t gives t = (sqrt(2) + sqrt(2 + 2)) * sqrt(h/g) = (1.414 + 2) * sqrt(h/g) = 3.414 * sqrt(h/g), which is close to 3.4 * sqrt(h/g).",
+      "options": [
+        { "id": "opt_k20_02_1", "questionId": "q_k20_02", "optionLabel": "A", "optionText": "$t=\\sqrt{\\frac{2h}{3g}}$", "orderIndex": 1 },
+        { "id": "opt_k20_02_2", "questionId": "q_k20_02", "optionLabel": "B", "optionText": "$t=1.8\\sqrt{\\frac{h}{g}}$", "orderIndex": 2 },
+        { "id": "opt_k20_02_3", "questionId": "q_k20_02", "optionLabel": "C", "optionText": "$t=3.4\\sqrt{\\frac{h}{g}}$", "orderIndex": 3 },
+        { "id": "opt_k20_02_4", "questionId": "q_k20_02", "optionLabel": "D", "optionText": "$t=\\frac{2}{3}\\sqrt{\\frac{h}{g}}$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_02_3"
+    },
+    {
+      "id": "q_k20_03",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 3,
+      "questionText": "The velocity (v) and time (t) graph of a body in a straight line motion is shown in the figure. The point S is at 4.333 seconds. The total distance covered by the body in 6s is: <svg viewBox='0 0 340 180' width='320' height='170' xmlns='http://www.w3.org/2000/svg' style='display:block;margin:10px auto;background:#fff;'><defs><marker id='arrow3' viewBox='0 0 10 10' refX='6' refY='5' markerWidth='6' markerHeight='6' orient='auto-start-reverse'><path d='M 0 1.5 L 8 5 L 0 8.5 z' fill='#000'/></marker></defs><line x1='40' y1='160' x2='40' y2='15' stroke='#000' stroke-width='1.5' marker-end='url(#arrow3)'/><line x1='30' y1='90' x2='320' y2='90' stroke='#000' stroke-width='1.5' marker-end='url(#arrow3)'/><text x='10' y='30' font-family='sans-serif' font-size='11'>v(m/s)</text><text x='305' y='80' font-family='sans-serif' font-size='11'>t(in s)</text><polyline points='40,90 110,40 145,40 191.6,90 215,130 250,90' fill='none' stroke='#000' stroke-width='2'/><text x='25' y='44' font-family='sans-serif' font-size='11'>4</text><text x='25' y='69' font-family='sans-serif' font-size='11'>2</text><text x='25' y='94' font-family='sans-serif' font-size='11'>0</text><text x='20' y='134' font-family='sans-serif' font-size='11'>-2</text><text x='75' y='105' font-family='sans-serif' font-size='11'>1</text><text x='110' y='105' font-family='sans-serif' font-size='11'>2</text><text x='145' y='105' font-family='sans-serif' font-size='11'>3</text><text x='180' y='105' font-family='sans-serif' font-size='11'>4</text><text x='215' y='105' font-family='sans-serif' font-size='11'>5</text><text x='250' y='105' font-family='sans-serif' font-size='11'>6</text><text x='105' y='32' font-family='sans-serif' font-size='11' font-weight='bold'>A</text><text x='145' y='32' font-family='sans-serif' font-size='11' font-weight='bold'>B</text><text x='190' y='82' font-family='sans-serif' font-size='11' font-weight='bold'>S</text><text x='215' y='145' font-family='sans-serif' font-size='11' font-weight='bold'>C</text><text x='250' y='82' font-family='sans-serif' font-size='11' font-weight='bold'>D</text></svg>",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Total distance is the sum of magnitudes of the areas. Point S is at t = 13/3 s (4.333 s). Area above time axis (t = 0 to 13/3 s): Trapezoid with parallel sides 1 s and 13/3 s, height 4 m/s: A1 = (1/2) * (13/3 + 1) * 4 = 32/3 m. Area below time axis (t = 13/3 to 6 s): Triangle with base = (6 - 13/3) = 5/3 s, height = 2 m/s: A2 = (1/2) * (5/3) * 2 = 5/3 m. Total distance = 32/3 + 5/3 = 37/3 m.",
+      "options": [
+        { "id": "opt_k20_03_1", "questionId": "q_k20_03", "optionLabel": "A", "optionText": "$12\\text{ m}$", "orderIndex": 1 },
+        { "id": "opt_k20_03_2", "questionId": "q_k20_03", "optionLabel": "B", "optionText": "$11\\text{ m}$", "orderIndex": 2 },
+        { "id": "opt_k20_03_3", "questionId": "q_k20_03", "optionLabel": "C", "optionText": "$\\frac{49}{4}\\text{ m}$", "orderIndex": 3 },
+        { "id": "opt_k20_03_4", "questionId": "q_k20_03", "optionLabel": "D", "optionText": "$\\frac{37}{3}\\text{ m}$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_03_4"
+    },
+    {
+      "id": "q_k20_04",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 4,
+      "questionText": "Train A and train B are running on parallel tracks in the opposite directions with speeds of $36\\text{ km/hour}$ and $72\\text{ km/hour},$ respectively. A person is walking in train A in the direction opposite to its motion with a speed of $1.8\\text{ km/hour}.$ Speed $(\\text{in ms}^{-1})$ of this person as observed from train B will be close to (take the distance between the tracks as negligible):",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Let the direction of train A be positive. Velocity of train A, v_A = +36 km/h = +10 m/s. Velocity of train B, v_B = -72 km/h = -20 m/s. Velocity of person relative to train A, v_P/A = -1.8 km/h = -0.5 m/s. Velocity of person relative to ground, v_P = 10 - 0.5 = +9.5 m/s. Velocity of person as observed from train B = v_P - v_B = 9.5 - (-20) = 29.5 m/s.",
+      "options": [
+        { "id": "opt_k20_04_1", "questionId": "q_k20_04", "optionLabel": "A", "optionText": "$30.5\\text{ ms}^{-1}$", "orderIndex": 1 },
+        { "id": "opt_k20_04_2", "questionId": "q_k20_04", "optionLabel": "B", "optionText": "$29.5\\text{ ms}^{-1}$", "orderIndex": 2 },
+        { "id": "opt_k20_04_3", "questionId": "q_k20_04", "optionLabel": "C", "optionText": "$31.5\\text{ ms}^{-1}$", "orderIndex": 3 },
+        { "id": "opt_k20_04_4", "questionId": "q_k20_04", "optionLabel": "D", "optionText": "$28.5\\text{ ms}^{-1}$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_04_2"
+    },
+    {
+      "id": "q_k20_05",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 5,
+      "questionText": "A particle starts from the origin at $t=0$ with an initial velocity of $3.0\\hat{i}\\text{ m/s}$ and moves in the x-y plane with a constant acceleration $(6.0\\hat{i}+4.0\\hat{j})\\text{ m/s}^{2}.$ The x-coordinate of the particle at the instant when its y-coordinate is $32\\text{ m}$ is D meters. The value of D is:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Along the y-axis: u_y = 0, a_y = 4.0 m/s^2, y = 32 m. Using y = (1/2)*a_y*t^2: 32 = (1/2)*4*t^2 => 2*t^2 = 32 => t = 4 s. Along the x-axis: u_x = 3.0 m/s, a_x = 6.0 m/s^2. x = u_x*t + (1/2)*a_x*t^2 = 3.0*(4) + (1/2)*6.0*(4^2) = 12 + 48 = 60 m. Thus D = 60.",
+      "options": [
+        { "id": "opt_k20_05_1", "questionId": "q_k20_05", "optionLabel": "A", "optionText": "$60$", "orderIndex": 1 },
+        { "id": "opt_k20_05_2", "questionId": "q_k20_05", "optionLabel": "B", "optionText": "$50$", "orderIndex": 2 },
+        { "id": "opt_k20_05_3", "questionId": "q_k20_05", "optionLabel": "C", "optionText": "$32$", "orderIndex": 3 },
+        { "id": "opt_k20_05_4", "questionId": "q_k20_05", "optionLabel": "D", "optionText": "$40$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_05_1"
+    },
+    {
+      "id": "q_k20_06",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 6,
+      "questionText": "A particle moves such that its position vector $\\vec{r}(t)=\\cos\\omega t\\hat{i}+\\sin\\omega t\\hat{j}$ where $\\omega$ is a constant and $t$ is time. Then which of the following statements is true for the velocity $\\vec{v}(t)$ and acceleration $\\vec{a}(t)$ of the particle:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Position vector r(t) = cos(w*t)i + sin(w*t)j. Velocity vector v(t) = dr/dt = -w*sin(w*t)i + w*cos(w*t)j. Dot product r . v = -w*sin(w*t)*cos(w*t) + w*sin(w*t)*cos(w*t) = 0, so v is perpendicular to r. Acceleration vector a(t) = dv/dt = -w^2*cos(w*t)i - w^2*sin(w*t)j = -w^2 * r(t). Since a is directed opposite to r, it is directed towards the origin.",
+      "options": [
+        { "id": "opt_k20_06_1", "questionId": "q_k20_06", "optionLabel": "A", "optionText": "$\\vec{v}$ and $\\vec{a}$ both are parallel to $\\vec{r}$", "orderIndex": 1 },
+        { "id": "opt_k20_06_2", "questionId": "q_k20_06", "optionLabel": "B", "optionText": "$\\vec{v}$ is perpendicular to $\\vec{r}$ and $\\vec{a}$ is directed away from the origin", "orderIndex": 2 },
+        { "id": "opt_k20_06_3", "questionId": "q_k20_06", "optionLabel": "C", "optionText": "$\\vec{v}$ and $\\vec{a}$ both are perpendicular to $\\vec{r}$", "orderIndex": 3 },
+        { "id": "opt_k20_06_4", "questionId": "q_k20_06", "optionLabel": "D", "optionText": "$\\vec{v}$ is perpendicular to $\\vec{r}$ and $\\vec{a}$ is directed towards the origin", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_06_4"
+    },
+    {
+      "id": "q_k20_07",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 7,
+      "questionText": "Starting from the origin at time $t=0$, with initial velocity $5\\hat{j}\\text{ ms}^{-1}$ a particle moves in the x-y plane with a constant acceleration of $(10\\hat{i}+4\\hat{j})\\text{ ms}^{-2}$. At time $t,$ its coordinates are $(20\\text{ m}, y_{0}\\text{ m}).$ The values of $t$ and $y_{0}$ are respectively:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Along the x-axis: u_x = 0, a_x = 10 ms^-2, x = 20 m. x = (1/2)*a_x*t^2 => 20 = 5*t^2 => t = 2 s. Along the y-axis: u_y = 5 ms^-1, a_y = 4 ms^-2. y0 = u_y*t + (1/2)*a_y*t^2 = 5*(2) + (1/2)*4*(2^2) = 10 + 8 = 18 m. Therefore t = 2 s and y0 = 18 m.",
+      "options": [
+        { "id": "opt_k20_07_1", "questionId": "q_k20_07", "optionLabel": "A", "optionText": "$4\\text{s and } 52\\text{ m}$", "orderIndex": 1 },
+        { "id": "opt_k20_07_2", "questionId": "q_k20_07", "optionLabel": "B", "optionText": "$2\\text{s and } 24\\text{ m}$", "orderIndex": 2 },
+        { "id": "opt_k20_07_3", "questionId": "q_k20_07", "optionLabel": "C", "optionText": "$2\\text{s and } 18\\text{ m}$", "orderIndex": 3 },
+        { "id": "opt_k20_07_4", "questionId": "q_k20_07", "optionLabel": "D", "optionText": "$5\\text{s and } 25\\text{ m}$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_07_3"
+    },
+    {
+      "id": "q_k20_08",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 8,
+      "questionText": "A clock has a continuously moving second's hand of $0.1\\text{ m}$ length. The average acceleration of the tip of the hand $(\\text{in units of ms}^{-2})$ is of the order of:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Time period of second's hand T = 60 s. Angular velocity omega = 2*pi / 60 = pi / 30 rad/s. Centripetal acceleration a = omega^2 * r = (pi/30)^2 * 0.1 = (9.86 / 900) * 0.1 = 1.09 * 10^-3 ms^-2. The order of magnitude is 10^-3.",
+      "options": [
+        { "id": "opt_k20_08_1", "questionId": "q_k20_08", "optionLabel": "A", "optionText": "$10^{-3}$", "orderIndex": 1 },
+        { "id": "opt_k20_08_2", "questionId": "q_k20_08", "optionLabel": "B", "optionText": "$10^{-2}$", "orderIndex": 2 },
+        { "id": "opt_k20_08_3", "questionId": "q_k20_08", "optionLabel": "C", "optionText": "$10^{-4}$", "orderIndex": 3 },
+        { "id": "opt_k20_08_4", "questionId": "q_k20_08", "optionLabel": "D", "optionText": "$10^{-1}$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_08_1"
+    },
+    {
+      "id": "q_k20_09",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 9,
+      "questionText": "A ball is dropped from the top of a $100\\text{ m}$ high tower on a planet. In the last $(1/2)\\text{s}$ before hitting the ground, it covers a distance of $19\\text{ m}.$ Acceleration due to gravity $(\\text{in ms}^{-2})$ near the surface on that planet is:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Let the total time taken to hit the ground be T. Total height H = (1/2)*g*T^2 = 100. Height fallen in time (T - 0.5) is 100 - 19 = 81 m: (1/2)*g*(T - 0.5)^2 = 81. Dividing the two equations gives (T - 0.5)^2 / T^2 = 81/100 => (T - 0.5)/T = 9/10 => 10T - 5 = 9T => T = 5 s. Using (1/2)*g*(5^2) = 100 gives g = 200 / 25 = 8 ms^-2.",
+      "type": "NUMERICAL",
+      "numericalAnswer": 8.00,
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z"
+    },
+    {
+      "id": "q_k20_10",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 10,
+      "questionText": "The speed verses time graph for a particle is shown in the figure. The distance travelled (in m) by the particle during the time interval $t=0$ to $t=5\\text{s}$ will be: <svg viewBox='0 0 260 180' width='240' height='170' xmlns='http://www.w3.org/2000/svg' style='display:block;margin:10px auto;background:#fff;'><defs><marker id='arrow10' viewBox='0 0 10 10' refX='6' refY='5' markerWidth='6' markerHeight='6' orient='auto-start-reverse'><path d='M 0 1.5 L 8 5 L 0 8.5 z' fill='#000'/></marker></defs><line x1='40' y1='140' x2='40' y2='20' stroke='#000' stroke-width='1.5' marker-end='url(#arrow10)'/><line x1='40' y1='140' x2='240' y2='140' stroke='#000' stroke-width='1.5' marker-end='url(#arrow10)'/><text x='10' y='50' font-family='sans-serif' font-size='11'>u</text><text x='0' y='65' font-family='sans-serif' font-size='10'>(ms⁻¹)</text><text x='160' y='165' font-family='sans-serif' font-size='11'>time (s) &rarr;</text><line x1='40' y1='140' x2='200' y2='44' stroke='#000' stroke-width='2'/><text x='22' y='144' font-family='sans-serif' font-size='10'>0</text><text x='22' y='120' font-family='sans-serif' font-size='10'>2</text><text x='22' y='96' font-family='sans-serif' font-size='10'>4</text><text x='22' y='72' font-family='sans-serif' font-size='10'>6</text><text x='22' y='48' font-family='sans-serif' font-size='10'>8</text><text x='15' y='24' font-family='sans-serif' font-size='10'>10</text><text x='70' y='152' font-family='sans-serif' font-size='10'>1</text><text x='102' y='152' font-family='sans-serif' font-size='10'>2</text><text x='135' y='152' font-family='sans-serif' font-size='10'>3</text><text x='168' y='152' font-family='sans-serif' font-size='10'>4</text><text x='200' y='152' font-family='sans-serif' font-size='10'>5</text></svg>",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Distance travelled is the area under the speed-time graph from t = 0 to t = 5 s. The shape is a right triangle with base = 5 s and height = 8 ms^-1. Distance = (1/2) * base * height = (1/2) * 5 * 8 = 20 m.",
+      "type": "NUMERICAL",
+      "numericalAnswer": 20.00,
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z"
+    },
+    {
+      "id": "q_k20_11",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 11,
+      "questionText": "The distance x covered by a particle in one dimensional motion varies with time $t$ as $x^{2}=at^{2}+2bt+c$. If the acceleration of the particle depends on $x$ as $x^{-n}$, where $n$ is an integer, the value of $n$ is:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Differentiating x^2 = at^2 + 2bt + c with respect to time: 2x*(dx/dt) = 2at + 2b => x*v = at + b => v = (at + b)/x. Differentiating again: v^2 + x*a_acc = a => x*a_acc = a - v^2 = a - (at + b)^2 / x^2 = (a*x^2 - (at + b)^2) / x^2. Substituting x^2 gives a(at^2 + 2bt + c) - (a^2*t^2 + 2abt + b^2) = ac - b^2. Thus x*a_acc = (ac - b^2)/x^2 => a_acc = (ac - b^2)/x^3. Since acceleration is proportional to x^(-3), n = 3.",
+      "type": "NUMERICAL",
+      "numericalAnswer": 3.00,
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z"
+    },
+    {
+      "id": "q_k20_12",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 12,
+      "questionText": "A particle is moving along the x-axis with its coordinate with time $t$ given by $x(t)=10+8t-3t^{2}$. Another particle is moving along the y-axis with its coordinate as a function of time given by $y(t)=5-8t^{3}.$ At $t=1\\text{ s},$ the speed of the second particle as measured in the frame of the first particle is given as $\\sqrt{v}$. Then $v$ $(\\text{in m}^{2}/\\text{s}^{2})$ is:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Velocity of first particle: v_x = dx/dt = 8 - 6t. At t = 1 s, v_x = 8 - 6 = 2 m/s, so v1 = 2i. Velocity of second particle: v_y = dy/dt = -24*t^2. At t = 1 s, v_y = -24 m/s, so v2 = -24j. Velocity of particle 2 relative to particle 1 is v_rel = v2 - v1 = -2i - 24j. Relative speed = sqrt((-2)^2 + (-24)^2) = sqrt(4 + 576) = sqrt(580) m/s. Therefore v = 580.",
+      "type": "NUMERICAL",
+      "numericalAnswer": 580.00,
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z"
+    },
+    {
+      "id": "q_k20_13",
+      "testId": "test_kinematics_jee_2020",
+      "subject": "PHYSICS",
+      "orderIndex": 13,
+      "questionText": "When a car is at rest, its driver sees rain drops falling on it vertically. When driving the car with speed $v$, he sees that rain drops are coming at an angle $60^{\\circ}$ from the horizontal. On further increasing the speed of the car to $(1+\\beta)v,$ this angle changes to $45^{\\circ}.$ The value of $\\beta$ is close to:",
+      "questionImageUrl": "",
+      "marks": 4,
+      "negativeMarks": 1,
+      "solutionText": "Let velocity of rain in ground frame be v_r = -v0 j. When car speed is v: v_c = v i. Relative velocity v_r/c = -v i - v0 j. Angle with horizontal is 60 deg, so tan(60 deg) = v0 / v = sqrt(3) => v0 = sqrt(3)*v. When car speed is (1 + beta)*v: relative velocity angle with horizontal is 45 deg, so tan(45 deg) = v0 / ((1 + beta)*v) = 1 => v0 = (1 + beta)*v. Equating gives (1 + beta)*v = sqrt(3)*v => 1 + beta = 1.732 => beta = 0.732, which is close to 0.73.",
+      "options": [
+        { "id": "opt_k20_13_1", "questionId": "q_k20_13", "optionLabel": "A", "optionText": "$0.41$", "orderIndex": 1 },
+        { "id": "opt_k20_13_2", "questionId": "q_k20_13", "optionLabel": "B", "optionText": "$0.50$", "orderIndex": 2 },
+        { "id": "opt_k20_13_3", "questionId": "q_k20_13", "optionLabel": "C", "optionText": "$0.37$", "orderIndex": 3 },
+        { "id": "opt_k20_13_4", "questionId": "q_k20_13", "optionLabel": "D", "optionText": "$0.73$", "orderIndex": 4 }
+      ],
+      "createdAt": "2026-08-28T09:00:16.384Z",
+      "updatedAt": "2026-08-28T09:00:40.055Z",
+      "correctOptionId": "opt_k20_13_4"
     }
   ],
   "attempts": [
