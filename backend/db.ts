@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcryptjs';
-import { getFirebaseFirestore } from './firebaseAdmin';
+import { getFirebaseFirestore, hasFirebaseCredentials } from './firebaseAdmin';
 import {
   User,
   Test,
@@ -54,6 +54,13 @@ class Database {
   }
 
   private async init() {
+    console.log(
+      `[EduStack DB] Booting in ${process.env.NODE_ENV === 'production' ? 'production' : 'development'} mode. ` +
+      `Local JSON store: ${DB_FILE}. Firestore live-persistence credentials present: ${hasFirebaseCredentials}.` +
+      (process.env.NODE_ENV === 'production' && !hasFirebaseCredentials
+        ? ' -> Runtime changes (new tests, attempts, error notes) will be LOST on the next restart until this is fixed.'
+        : '')
+    );
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
@@ -99,19 +106,23 @@ class Database {
     await this.loadLiveDataFromFirestore();
   }
 
-  // Loads users/attempts/errorNotes that were created live (by real people using the
-  // deployed site) from Firestore, since those are the things that must survive a Render
-  // restart — tests/questions still come from the committed seed file, since you manage
-  // those yourself via code.
+  // Loads everything that can be created/changed live (by real people using the deployed
+  // site) from Firestore, since those are the things that must survive a Render restart:
+  // users, attempts, error notes, teacher-created tests, questions, and folders. The 4
+  // seed tests still come from the committed data file (SEED_FILE) and are untouched by
+  // this — this only overlays/adds live_* records on top of that seed snapshot.
   private async loadLiveDataFromFirestore() {
     try {
       const firestore = getFirebaseFirestore();
       if (!firestore) return;
 
-      const [usersSnap, attemptsSnap, errorNotesSnap] = await Promise.all([
+      const [usersSnap, attemptsSnap, errorNotesSnap, testsSnap, questionsSnap, foldersSnap] = await Promise.all([
         firestore.collection('live_users').get(),
         firestore.collection('live_attempts').get(),
         firestore.collection('live_errorNotes').get(),
+        firestore.collection('live_tests').get(),
+        firestore.collection('live_questions').get(),
+        firestore.collection('live_testFolders').get(),
       ]);
 
       if (!usersSnap.empty) {
@@ -132,7 +143,28 @@ class Database {
         this.data.errorNotes = Array.from(byId.values());
       }
 
-      console.log('[Firebase] Loaded live users/attempts/errorNotes from Firestore');
+      if (!testsSnap.empty) {
+        const byId = new Map(this.data.tests.map(t => [t.id, t]));
+        testsSnap.forEach(doc => byId.set(doc.id, doc.data() as Test));
+        this.data.tests = Array.from(byId.values());
+      }
+
+      if (!questionsSnap.empty) {
+        const byId = new Map(this.data.questions.map(q => [q.id, q]));
+        questionsSnap.forEach(doc => byId.set(doc.id, doc.data() as Question));
+        this.data.questions = Array.from(byId.values());
+      }
+
+      if (!foldersSnap.empty) {
+        const byId = new Map(this.data.testFolders.map(f => [f.id, f]));
+        foldersSnap.forEach(doc => byId.set(doc.id, doc.data() as TestFolder));
+        this.data.testFolders = Array.from(byId.values());
+      }
+
+      console.log(
+        `[Firebase] Loaded live data from Firestore: ${usersSnap.size} users, ${attemptsSnap.size} attempts, ` +
+        `${errorNotesSnap.size} errorNotes, ${testsSnap.size} tests, ${questionsSnap.size} questions, ${foldersSnap.size} folders`
+      );
     } catch (err) {
       console.warn('[Firebase] Could not load live data from Firestore, continuing with local snapshot:', err);
     }
@@ -151,6 +183,21 @@ class Database {
       });
     } catch (err) {
       console.warn(`[Firebase] Failed to persist ${collectionName}/${id}:`, err);
+    }
+  }
+
+  // Companion to persistLive: removes a record from Firestore when it's deleted locally,
+  // so a deleted test/question/folder doesn't get resurrected by loadLiveDataFromFirestore
+  // on the next restart.
+  private persistLiveDelete(collectionName: string, id: string) {
+    try {
+      const firestore = getFirebaseFirestore();
+      if (!firestore) return;
+      firestore.collection(collectionName).doc(id).delete().catch((err: any) => {
+        console.warn(`[Firebase] Failed to delete ${collectionName}/${id}:`, err);
+      });
+    } catch (err) {
+      console.warn(`[Firebase] Failed to delete ${collectionName}/${id}:`, err);
     }
   }
 
@@ -911,6 +958,7 @@ class Database {
   public createTest(test: Test): Test {
     this.data.tests.push(test);
     this.save();
+    this.persistLive('live_tests', test.id, test);
     return test;
   }
 
@@ -923,6 +971,7 @@ class Database {
       updatedAt: new Date().toISOString(),
     };
     this.save();
+    this.persistLive('live_tests', id, this.data.tests[idx]);
     return this.data.tests[idx];
   }
 
@@ -932,6 +981,7 @@ class Database {
     this.data.questions = this.data.questions.filter(q => q.testId !== id);
     this.data.attempts = this.data.attempts.filter(a => a.testId !== id);
     this.save();
+    this.persistLiveDelete('live_tests', id);
     return this.data.tests.length < initLen;
   }
 
@@ -982,10 +1032,12 @@ class Database {
           updatedAt: new Date().toISOString(),
         };
         this.data.questions.push(duplicatedQ);
+        this.persistLive('live_questions', duplicatedQ.id, duplicatedQ);
       }
     }
 
     this.save();
+    this.persistLive('live_tests', duplicatedTest.id, duplicatedTest);
     return this.getTestById(newTestId);
   }
 
@@ -1001,6 +1053,7 @@ class Database {
   public createFolder(folder: TestFolder): TestFolder {
     this.data.testFolders.push(folder);
     this.save();
+    this.persistLive('live_testFolders', folder.id, folder);
     return folder;
   }
 
@@ -1038,6 +1091,7 @@ class Database {
       updatedAt: new Date().toISOString(),
     };
     this.save();
+    this.persistLive('live_testFolders', id, this.data.testFolders[idx]);
     return this.data.testFolders[idx];
   }
 
@@ -1050,14 +1104,21 @@ class Database {
     const parentId = folder.parentId ?? null;
 
     this.data.testFolders.forEach(f => {
-      if (f.parentId === id) f.parentId = parentId;
+      if (f.parentId === id) {
+        f.parentId = parentId;
+        this.persistLive('live_testFolders', f.id, f);
+      }
     });
     this.data.tests.forEach(t => {
-      if (t.folderId === id) t.folderId = parentId;
+      if (t.folderId === id) {
+        t.folderId = parentId;
+        this.persistLive('live_tests', t.id, t);
+      }
     });
 
     this.data.testFolders = this.data.testFolders.filter(f => f.id !== id);
     this.save();
+    this.persistLiveDelete('live_testFolders', id);
     return true;
   }
 
@@ -1076,6 +1137,7 @@ class Database {
     this.data.questions.push(question);
     this.reindexTestQuestions(question.testId);
     this.save();
+    this.persistLive('live_questions', question.id, question);
     return question;
   }
 
@@ -1088,6 +1150,7 @@ class Database {
       updatedAt: new Date().toISOString(),
     };
     this.save();
+    this.persistLive('live_questions', id, this.data.questions[idx]);
     return this.data.questions[idx];
   }
 
@@ -1098,6 +1161,7 @@ class Database {
     this.data.questions = this.data.questions.filter(item => item.id !== id);
     this.reindexTestQuestions(testId);
     this.save();
+    this.persistLiveDelete('live_questions', id);
     return true;
   }
 
@@ -1140,6 +1204,7 @@ class Database {
     this.data.questions.push(newQ);
     this.reindexTestQuestions(original.testId);
     this.save();
+    this.persistLive('live_questions', newQ.id, newQ);
     return newQ;
   }
 
@@ -1148,6 +1213,7 @@ class Database {
       const q = this.data.questions.find(item => item.id === id && item.testId === testId);
       if (q) {
         q.orderIndex = index + 1;
+        this.persistLive('live_questions', q.id, q);
       }
     });
     this.save();
@@ -1165,6 +1231,7 @@ class Database {
       t.totalQuestions = testQs.length;
       t.questionCount = testQs.length;
       t.updatedAt = new Date().toISOString();
+      this.persistLive('live_tests', t.id, t);
     }
   }
 

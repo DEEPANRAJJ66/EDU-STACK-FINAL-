@@ -22,6 +22,7 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
 }
 
 let app: App;
+export const hasFirebaseCredentials = !!serviceAccount;
 
 if (!getApps().length) {
   if (serviceAccount) {
@@ -29,8 +30,25 @@ if (!getApps().length) {
       credential: cert(serviceAccount),
       projectId: serviceAccount.project_id,
     });
+    console.log(
+      `[Firebase] Admin SDK initialized with service account for project "${serviceAccount.project_id}". ` +
+      `Live persistence (tests/attempts/errorNotes surviving a restart) is active.`
+    );
   } else {
     app = initializeApp();
+    // No FIREBASE_SERVICE_ACCOUNT_JSON env var and no local service-account.json found.
+    // On Render (or any non-GCP host) this falls back to Application Default Credentials,
+    // which do NOT exist there — every Firestore read/write below will fail. This is not
+    // thrown here because auth failures only surface when a Firestore call is actually
+    // made, but it is logged loudly now so it shows up in the Render deploy logs
+    // immediately instead of being discovered later as "my data disappeared".
+    console.error(
+      '[Firebase] WARNING: no service account credentials found (FIREBASE_SERVICE_ACCOUNT_JSON ' +
+      'env var is not set, and no backend/service-account.json file exists). Firestore calls will ' +
+      'fail silently, so teacher-created tests, student attempts, and error notes will NOT survive ' +
+      'a server restart/redeploy on Render. Set FIREBASE_SERVICE_ACCOUNT_JSON in the Render ' +
+      'dashboard (Environment tab) to the full JSON contents of your Firebase service account key.'
+    );
   }
 } else {
   app = getApps()[0];
